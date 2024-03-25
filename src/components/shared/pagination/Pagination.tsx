@@ -4,6 +4,8 @@ interface Props {
   totalPages: number;
 }
 export const Pagination = ({ totalPages }: Props) => {
+  const createPageUrl = (pageNumber: number | string) => {};
+
   return (
     <div className="mb-10 flex justify-center">
       <nav aria-label="Page navigation example">
