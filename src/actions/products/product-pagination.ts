@@ -2,15 +2,18 @@
 
 import { Product } from "@/interfaces";
 import prisma from "@/lib/prisma";
+import { Gender } from "@prisma/client";
 
 interface PaginationOptions {
   page?: number;
   take?: number;
+  gender?: Gender;
 }
 
 export const getPaginatedProducts = async ({
   page = 1,
   take = 12,
+  gender,
 }: PaginationOptions) => {
   if (isNaN(Number(page))) page = 1;
   if (isNaN(Number(take))) take = 12;
@@ -35,9 +38,16 @@ export const getPaginatedProducts = async ({
           },
         },
       },
+      where: {
+        gender: gender,
+      },
     });
     // 2. Get totlal pages amount
-    const totalAmount = await prisma.product.count({});
+    const totalAmount = await prisma.product.count({
+      where: {
+        gender: gender,
+      },
+    });
     const totalPages = Math.ceil(totalAmount / take);
 
     return {
