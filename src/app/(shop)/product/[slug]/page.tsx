@@ -16,6 +16,21 @@ interface Props {
   };
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = params;
+  const product = await getProductBySlug(slug);
+
+  return {
+    title: product?.title ?? "Product not found",
+    description: product?.description ?? "",
+    openGraph: {
+      title: product?.title ?? "Product not found",
+      description: product?.description ?? "",
+      images: [`/products/${product?.images[1]}`],
+    },
+  };
+}
+
 export default async function ProductPage({ params }: Props) {
   const { slug } = params;
 

@@ -21,21 +21,15 @@ export const StockLabel: FC<Props> = ({ slug }) => {
     setStock(inStock);
     setisLoading(false);
   };
-  return (
-    <>
-      {isLoading && (
-        <h2
-          className={`${titleFont.className} antialised font-bold text-lg bg-gray-200 animate-pulse`}
-        >
-          &nbsp;
-        </h2>
-      )}
-
-      {!isLoading && (
-        <h2 className={`${titleFont.className} antialised font-bold text-lg`}>
-          Stock: {stock}
-        </h2>
-      )}
-    </>
+  return isLoading ? (
+    <h2
+      className={`${titleFont.className} antialised font-bold text-lg bg-gray-200 animate-pulse`}
+    >
+      &nbsp;
+    </h2>
+  ) : (
+    <h2 className={`${titleFont.className} antialised font-bold text-lg`}>
+      Stock: {stock}
+    </h2>
   );
 };
