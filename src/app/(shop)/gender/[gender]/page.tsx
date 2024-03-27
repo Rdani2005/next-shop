@@ -1,3 +1,4 @@
+export const revalidate = 60;
 import { getPaginatedProducts } from "@/actions";
 import { Pagination, ProductGrid, Title } from "@/components";
 import { Category } from "@/interfaces";
@@ -27,11 +28,11 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   });
 
   if (products.length === 0) {
-    redirect(`/`);
+    redirect(`/gender/${gender}`);
   }
 
   return (
-    <>
+    <main>
       <Title
         title={`Artículos de ${labels[gender]}`}
         subtitle="Todos los productos"
@@ -40,6 +41,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
       <ProductGrid products={products} />
       <Pagination totalPages={totalPages} />
-    </>
+    </main>
   );
 }
+
+// api needed to integrate metallic casino (JSON)
