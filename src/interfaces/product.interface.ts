@@ -14,8 +14,8 @@ export interface Product {
 
 export interface CartProduct {
   id: string;
-  images: string;
-  inStock: number;
+  image: string;
+  quantity: number;
   price: number;
   size: Size;
   slug: string;

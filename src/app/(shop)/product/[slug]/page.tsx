@@ -1,11 +1,6 @@
 export const revalidate = 604800; // 7 days | 60 * 60 * 24 * days
 import { notFound } from "next/navigation";
-import {
-  ProductMobileSlideshow,
-  ProductSlideshow,
-  QuantitySelector,
-  SizeSelector,
-} from "@/components";
+import { ProductMobileSlideshow, ProductSlideshow } from "@/components";
 import { titleFont } from "@/config/fonts";
 import { getProductBySlug } from "@/actions";
 import { StockLabel } from "@/components/product/stock-label/StockLabel";
@@ -25,6 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: product?.title ?? "Product not found",
     description: product?.description ?? "",
+    metadataBase: `/product/${slug}`,
     openGraph: {
       title: product?.title ?? "Product not found",
       description: product?.description ?? "",
