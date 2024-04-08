@@ -6,8 +6,13 @@ async function main() {
   await prisma.productImage.deleteMany();
   await prisma.product.deleteMany();
   await prisma.category.deleteMany();
+  await prisma.user.deleteMany();
 
-  const { categories, products } = initialData;
+  const { categories, products, users } = initialData;
+
+  await prisma.user.createMany({
+    data: users,
+  });
 
   await prisma.category.createMany({
     data: categories.map((category) => ({
@@ -43,7 +48,7 @@ async function main() {
 
 (() => {
   if (process.env.NODE_ENV === "production") {
-    log("Cannot run seed command on productio!");
+    log("Cannot run seed command on production!");
     return;
   }
   main();
