@@ -3,13 +3,17 @@
 import { authenticate } from "@/actions";
 import clsx from "clsx";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { IoInformationOutline } from "react-icons/io5";
 
 export const LoginForm: FC = () => {
   const [state, dispatch] = useFormState(authenticate, undefined);
-
+  useEffect(() => {
+    if (state === "Success") {
+      window.location.replace("/");
+    }
+  }, [state]);
   return (
     <form action={dispatch} className="flex flex-col">
       <label htmlFor="email">Email Address</label>
@@ -31,7 +35,7 @@ export const LoginForm: FC = () => {
         aria-live="polite"
         aria-atomic="true"
       >
-        {state === "CredentialsSignin" && (
+        {state === "Invalid credentials." && (
           <div className="flex mb-2 ">
             <IoInformationOutline className="h-5 text-red-500" />
             <p className="text-sm text-red-500">Invalid Credentials</p>
