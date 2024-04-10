@@ -5,11 +5,11 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-type FormInputs = {
+interface FormInputs {
   name: string;
   email: string;
   password: string;
-};
+}
 
 export const RegisterForm = () => {
   const {
@@ -18,8 +18,11 @@ export const RegisterForm = () => {
     formState: { errors },
   } = useForm<FormInputs>();
   const [errorMessage, setErrorMessage] = useState("");
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    const { name, email, password } = data;
+  const onSubmit: SubmitHandler<FormInputs> = async ({
+    name,
+    email,
+    password,
+  }) => {
     const response = await registerUser(name, email, password);
     if (!response.ok) {
       setErrorMessage(response.message!);
