@@ -3,19 +3,28 @@ import { initialData } from "./seed";
 import prisma from "../lib/prisma";
 import { countries } from "./seed-countries";
 
-async function main() {
+async function deleteDatabaseData() {
+  await prisma.orderAddress.deleteMany();
+  await prisma.orderItem.deleteMany();
+  await prisma.order.deleteMany();
   await prisma.address.deleteMany();
   await prisma.productImage.deleteMany();
   await prisma.product.deleteMany();
   await prisma.category.deleteMany();
   await prisma.user.deleteMany();
   await prisma.country.deleteMany();
-  const { categories, products, users } = initialData;
+}
 
+async function createCountryData() {
   await prisma.country.createMany({
     data: countries,
   });
+}
 
+async function main() {
+  await deleteDatabaseData();
+  const { categories, products, users } = initialData;
+  await createCountryData();
   await prisma.user.createMany({
     data: users,
   });

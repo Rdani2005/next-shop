@@ -1,9 +1,9 @@
 "use client";
-
-import { useAddressStore, useCartStore } from "@/store";
-import { currencyFormat, sleep } from "@/utils";
-import clsx from "clsx";
 import { useEffect, useState } from "react";
+import clsx from "clsx";
+import { placeOrder } from "@/actions";
+import { useAddressStore, useCartStore } from "@/store";
+import { currencyFormat } from "@/utils";
 
 export const PlaceOrder = () => {
   const [loaded, setLoaded] = useState(false);
@@ -12,6 +12,7 @@ export const PlaceOrder = () => {
   const summaryInformation = useCartStore((state) =>
     state.getSummaryInformation(),
   );
+  const { cart } = useCartStore();
 
   useEffect(() => {
     setLoaded(true);
@@ -19,7 +20,14 @@ export const PlaceOrder = () => {
 
   const onPlaceOrder = async () => {
     setIsPlacingOrder(true);
-    await sleep(5);
+
+    const productsToOrder = cart.map((item) => ({
+      productId: item.id,
+      quantity: item.quantity,
+      size: item.size,
+    }));
+
+    await placeOrder(productsToOrder, address);
     setIsPlacingOrder(false);
   };
 
