@@ -1,13 +1,11 @@
 "use client";
 import Image from "next/image";
-import { QuantitySelector } from "@/components";
 import { useCartStore } from "@/store";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 export const ProductsInCart = () => {
   const [loaded, setloaded] = useState(false);
-  const { cart, updateProductQuantity, deleteProduct } = useCartStore();
+  const { cart } = useCartStore();
   useEffect(() => {
     setloaded(true);
   }, []);
@@ -18,7 +16,7 @@ export const ProductsInCart = () => {
     <>
       {cart.map((product) => (
         <div key={`${product.slug}-${product.size}`} className="flex">
-          <Link href={`/products/${product.slug}`}>
+          <span>
             <Image
               src={`/products/${product.image}`}
               width={100}
@@ -30,27 +28,14 @@ export const ProductsInCart = () => {
                 height: "100px",
               }}
             />
-          </Link>
+          </span>
           <div className="">
-            <Link
-              className="hover:underline cursor-pointer"
-              href={`/product/${product.slug}`}
-            >
+            <span className="hover:underline cursor-pointer">
               {product.title}
-            </Link>
-            <p>${product.price}</p>
-            <QuantitySelector
-              quantity={product.quantity}
-              onQuantityChanged={(quantity) =>
-                updateProductQuantity(product, quantity)
-              }
-            />
-            <button
-              className="underline mt-3"
-              onClick={() => deleteProduct(product)}
-            >
-              remove
-            </button>
+            </span>
+            <p>
+              ${product.price} - {product.quantity}
+            </p>
           </div>
         </div>
       ))}

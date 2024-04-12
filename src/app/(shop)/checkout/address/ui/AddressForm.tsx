@@ -3,11 +3,12 @@
 import { FC, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import clsx from "clsx";
-import { Country } from "@/interfaces";
+import { Address, Country } from "@/interfaces";
 import { useAddressStore } from "@/store";
-import { setUserAddress } from "@/actions/address/set-user-address";
 import { useSession } from "next-auth/react";
-import { deleteUserAddress } from "@/actions/address/delete-user-address";
+import { deleteUserAddress, setUserAddress } from "@/actions";
+import { useRouter } from "next/navigation";
+
 interface FormInputs {
   firstName: string;
   lastName: string;
@@ -22,15 +23,25 @@ interface FormInputs {
 
 interface Props {
   countries: Country[];
+  userStoredAddress: Partial<Address> | null;
 }
 
-export const AddressForm: FC<Props> = ({ countries }) => {
+export const AddressForm: FC<Props> = ({
+  countries,
+  userStoredAddress = {},
+}) => {
+  const router = useRouter();
   const {
     handleSubmit,
     register,
     reset,
     formState: { isValid },
-  } = useForm<FormInputs>({});
+  } = useForm<FormInputs>({
+    defaultValues: {
+      ...userStoredAddress,
+      rememberAddress: true,
+    },
+  });
   const { address, setAddress } = useAddressStore();
   const { data: session } = useSession({
     required: true,
@@ -41,15 +52,18 @@ export const AddressForm: FC<Props> = ({ countries }) => {
     }
   }, [address]);
 
-  const onSubmit: SubmitHandler<FormInputs> = (data) => {
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setAddress(data);
+
     const { rememberAddress, ...rest } = data;
+
     if (rememberAddress) {
-      setUserAddress(rest, session!.user.id);
+      await setUserAddress(rest, session!.user.id);
+      router.push("/checkout");
       return;
     }
-
-    deleteUserAddress(session!.user.id);
+    await deleteUserAddress(session!.user.id);
+    router.push("/checkout");
   };
 
   return (
@@ -172,7 +186,6 @@ export const AddressForm: FC<Props> = ({ countries }) => {
             "btn-primary": isValid,
             "btn-disable": !isValid,
           })}
-          // className="btn-primary flex w-full sm:w-1/2 justify-center "
         >
           Next
         </button>
