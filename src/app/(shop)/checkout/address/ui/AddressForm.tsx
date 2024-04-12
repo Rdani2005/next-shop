@@ -1,10 +1,13 @@
 "use client";
 
-import { Country } from "@/interfaces";
-import clsx from "clsx";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-
+import clsx from "clsx";
+import { Country } from "@/interfaces";
+import { useAddressStore } from "@/store";
+import { setUserAddress } from "@/actions/address/set-user-address";
+import { useSession } from "next-auth/react";
+import { deleteUserAddress } from "@/actions/address/delete-user-address";
 interface FormInputs {
   firstName: string;
   lastName: string;
@@ -25,27 +28,35 @@ export const AddressForm: FC<Props> = ({ countries }) => {
   const {
     handleSubmit,
     register,
+    reset,
     formState: { isValid },
-  } = useForm<FormInputs>({
-    defaultValues: {
-      // TODO: DATABASE INFO
-    },
+  } = useForm<FormInputs>({});
+  const { address, setAddress } = useAddressStore();
+  const { data: session } = useSession({
+    required: true,
   });
+  useEffect(() => {
+    if (address.firstName) {
+      reset(address);
+    }
+  }, [address]);
 
-  const onSubmit: SubmitHandler<FormInputs> = ({
-    firstName,
-    lastName,
-    address,
-    address2,
-    zipCode,
-    city,
-    country,
-    phone,
-    rememberAddress,
-  }) => {};
+  const onSubmit: SubmitHandler<FormInputs> = (data) => {
+    setAddress(data);
+    const { rememberAddress, ...rest } = data;
+    if (rememberAddress) {
+      setUserAddress(rest, session!.user.id);
+      return;
+    }
+
+    deleteUserAddress(session!.user.id);
+  };
 
   return (
-    <form className="grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2"
+    >
       <div className="flex flex-col mb-2">
         <span>Name</span>
         <input
