@@ -53,10 +53,8 @@ export const AddressForm: FC<Props> = ({
   }, [address]);
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    setAddress(data);
-
     const { rememberAddress, ...rest } = data;
-
+    setAddress(rest);
     if (rememberAddress) {
       await setUserAddress(rest, session!.user.id);
       router.push("/checkout");

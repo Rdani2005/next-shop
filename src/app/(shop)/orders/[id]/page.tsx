@@ -5,6 +5,8 @@ import { initialData } from "@/seed/seed";
 import Image from "next/image";
 import clsx from "clsx";
 import { IoCardOutline } from "react-icons/io5";
+import { getOrderById } from "@/actions";
+import { notFound } from "next/navigation";
 
 const productsInCart = [
   initialData.products[0],
@@ -18,8 +20,10 @@ interface Props {
   };
 }
 
-export default function OrderPage({ params }: Props) {
+export default async function OrderPage({ params }: Props) {
   const { id } = params;
+  const { ok, order } = await getOrderById();
+  if (!ok) notFound();
 
   return (
     <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
@@ -35,7 +39,7 @@ export default function OrderPage({ params }: Props) {
                 {
                   "bg-red-500": false,
                   "bg-green-700": true,
-                }
+                },
               )}
             >
               <IoCardOutline size={30} />
@@ -102,7 +106,7 @@ export default function OrderPage({ params }: Props) {
                   {
                     "bg-red-500": false,
                     "bg-green-700": true,
-                  }
+                  },
                 )}
               >
                 <IoCardOutline size={30} />
