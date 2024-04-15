@@ -14,10 +14,10 @@ interface Props {
 }
 
 const labels: Record<Category, string> = {
-  men: "para hombres",
-  women: "para mujeres",
-  kid: "para niños",
-  unisex: "para todos",
+  men: "For Men",
+  women: "For Women",
+  kid: "For Kids",
+  unisex: "For Everyone",
 };
 
 export default async function CategoryPage({ params, searchParams }: Props) {
@@ -34,8 +34,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   return (
     <main>
       <Title
-        title={`Artículos de ${labels[gender]}`}
-        subtitle="Todos los productos"
+        title={`${labels[gender]}`}
+        subtitle="All Products"
         className="mb-2"
       />
 
@@ -44,5 +44,3 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     </main>
   );
 }
-
-// api needed to integrate metallic casino (JSON)

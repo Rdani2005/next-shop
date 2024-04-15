@@ -60,19 +60,19 @@ export const Sidebar = () => {
         </div>
 
         <Link
-          href="/"
+          href="/profile"
           className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
         >
           <IoPersonOutline size={30} />
-          <span className="ml-3 text-xl">Perfil</span>
+          <span className="ml-3 text-xl">Profile</span>
         </Link>
 
         <Link
-          href="/"
+          href="/orders"
           className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
         >
           <IoTicketOutline size={30} />
-          <span className="ml-3 text-xl">Ordenes</span>
+          <span className="ml-3 text-xl">Orders</span>
         </Link>
 
         {isAuthenticated ? (
@@ -81,7 +81,7 @@ export const Sidebar = () => {
             className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
           >
             <IoLogOutOutline size={30} />
-            <span className="ml-3 text-xl">Salir</span>
+            <span className="ml-3 text-xl">Log Out</span>
           </button>
         ) : (
           <Link
@@ -90,7 +90,7 @@ export const Sidebar = () => {
             className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
           >
             <IoLogInOutline size={30} />
-            <span className="ml-3 text-xl">Ingresar</span>
+            <span className="ml-3 text-xl">Log In</span>
           </Link>
         )}
 
@@ -103,21 +103,21 @@ export const Sidebar = () => {
               className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
             >
               <IoShirtOutline size={30} />
-              <span className="ml-3 text-xl">Productos</span>
+              <span className="ml-3 text-xl">Products</span>
             </Link>
             <Link
               href="/"
               className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
             >
               <IoTicketOutline size={30} />
-              <span className="ml-3 text-xl">Ordenes</span>
+              <span className="ml-3 text-xl">Orders</span>
             </Link>
             <Link
               href="/"
               className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
             >
               <IoPeopleOutline size={30} />
-              <span className="ml-3 text-xl">Usuarios</span>
+              <span className="ml-3 text-xl">Users</span>
             </Link>
           </>
         )}
