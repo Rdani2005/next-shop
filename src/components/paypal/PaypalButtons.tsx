@@ -7,7 +7,7 @@ import {
   OnApproveActions,
 } from "@paypal/paypal-js";
 import { FC } from "react";
-import { setOrderTransactionId } from "@/actions";
+import { paypalCheckPayment, setOrderTransactionId } from "@/actions";
 
 interface Props {
   orderId: string;
@@ -43,7 +43,13 @@ export const PaypalButton: FC<Props> = ({ orderId, amount }) => {
   const onApprove = async (
     data: OnApproveData,
     actions: OnApproveActions,
-  ): Promise<void> => {};
+  ): Promise<void> => {
+    const details = await actions.order?.capture();
+    if (!details) {
+      return;
+    }
+    await paypalCheckPayment(details.id!);
+  };
 
   return isPending ? (
     <div className="animate-pulse">
