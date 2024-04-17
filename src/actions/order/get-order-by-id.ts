@@ -17,29 +17,55 @@ export const getOrderById = async (orderId: string) => {
     const order = await prisma.order.findUnique({
       where: {
         id: orderId,
-        userId: userId,
       },
       include: {
-        orderItems: {
-          include: {
-            product: {
+        orderAddress: {
+          select: {
+            firstName: true,
+            lastName: true,
+            city: true,
+            address: true,
+            zipCode: true,
+            address2: true,
+            phone: true,
+            Country: {
               select: {
-                id: true,
-                title: true,
-                price: true,
-                slug: true,
+                name: true,
               },
             },
           },
+        },
+        orderItems: {
           select: {
-            id: true,
             quantity: true,
             size: true,
             price: true,
+            product: {
+              select: {
+                title: true,
+                slug: true,
+                ProductImage: {
+                  select: {
+                    url: true,
+                  },
+                  take: 1,
+                },
+              },
+            },
           },
         },
       },
     });
+    if (!order) throw `Order with id: ${orderId} does not exists.`;
+    if (session.user.role === "user" && session.user.id !== order.userId) {
+      throw `Order with id: ${orderId} does not exists.`;
+    }
+
+    return {
+      ok: true,
+      order: order,
+      message: "Order exists.",
+    };
   } catch (error) {
     console.log({ error });
     return {
