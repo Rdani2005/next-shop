@@ -1,23 +1,22 @@
-import { Title } from "@/components";
-import { initialData } from "@/seed/seed";
+import { PaypalButton, Title } from "@/components";
 import Image from "next/image";
 import clsx from "clsx";
 import { IoCardOutline } from "react-icons/io5";
 import { getOrderById } from "@/actions";
 import { notFound } from "next/navigation";
 import { currencyFormat } from "@/utils";
-
-const productsInCart = [
-  initialData.products[0],
-  initialData.products[1],
-  initialData.products[2],
-];
+import { Metadata } from "next";
 
 interface Props {
   params: {
     id: string;
   };
 }
+
+export const metadata: Metadata = {
+  title: "Order",
+  description: "Looking for order information.",
+};
 
 export default async function OrderPage({ params }: Props) {
   const { id } = params;
@@ -115,20 +114,18 @@ export default async function OrderPage({ params }: Props) {
             </div>
 
             <div className="mt-5 mb-2 w-full">
-              <div
-                className={clsx(
-                  "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
-                  {
-                    "bg-red-500": !order?.isPaid,
-                    "bg-green-700": order?.isPaid,
-                  },
-                )}
-              >
-                <IoCardOutline size={30} />
-                <span className="mx-2">
-                  {order?.isPaid ? "Paid" : "Not Paid"}
-                </span>
-              </div>
+              {order?.isPaid ? (
+                <div
+                  className={clsx(
+                    "bg-green-500 flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
+                  )}
+                >
+                  <IoCardOutline size={30} />
+                  <span className="mx-2">Paid</span>
+                </div>
+              ) : (
+                <PaypalButton amount={order!.total} orderId={order!.id} />
+              )}
             </div>
           </div>
         </div>
