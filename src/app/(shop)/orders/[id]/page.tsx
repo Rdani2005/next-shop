@@ -6,6 +6,7 @@ import { getOrderById } from "@/actions";
 import { notFound } from "next/navigation";
 import { currencyFormat } from "@/utils";
 import { Metadata } from "next";
+import { OrderStatus } from "@/components";
 
 interface Props {
   params: {
@@ -30,22 +31,7 @@ export default async function OrderPage({ params }: Props) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
           <div className="flex flex-col mt-5">
-            <div
-              className={clsx(
-                "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
-                {
-                  "bg-red-500": !order?.isPaid,
-                  "bg-green-700": order?.isPaid,
-                },
-              )}
-            >
-              <IoCardOutline size={30} />
-              <span className="mx-2">
-                {order?.isPaid ? "Paid" : "Not Paid"}
-              </span>
-            </div>
-
-            {/** {order.productsInCart.map((product) => ( **/}
+            <OrderStatus isPaid={order?.isPaid || false} />
             {order?.orderItems.map((item) => (
               <div
                 key={`${item.product.slug}-${item.size}`}
@@ -117,7 +103,7 @@ export default async function OrderPage({ params }: Props) {
               {order?.isPaid ? (
                 <div
                   className={clsx(
-                    "bg-green-500 flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
+                    "bg-green-700 flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
                   )}
                 >
                   <IoCardOutline size={30} />

@@ -71,13 +71,13 @@ export default async function OrdersPage() {
                   {order.orderAddress?.firstName} {order.orderAddress?.lastName}
                 </td>
                 <td className="flex items-center text-sm  text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  <IoCardOutline className="text-red-800" />
                   <span
-                    className={clsx("mx-2", {
+                    className={clsx("mx-2 flex items-center", {
                       "text-red-800": !order.isPaid,
                       "text-green-800": order.isPaid,
                     })}
                   >
+                    <IoCardOutline className="text-red-800" />
                     {order.isPaid ? "Paid" : "Not Paid"}
                   </span>
                 </td>

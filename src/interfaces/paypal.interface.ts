@@ -1,11 +1,12 @@
-export interface PaypalResponse {
+export interface PayPalOrderStatusResponse {
   id: string;
   intent: string;
   status: string;
   payment_source: PaymentSource;
   purchase_units: PurchaseUnit[];
   payer: Payer;
-  create_time: Date;
+  create_time: string;
+  update_time: string;
   links: Link[];
 }
 
@@ -48,6 +49,8 @@ export interface PurchaseUnit {
   amount: Amount;
   payee: Payee;
   shipping: Shipping;
+  payments: Payments;
+  invoice_id: string;
 }
 
 export interface Amount {
@@ -58,6 +61,33 @@ export interface Amount {
 export interface Payee {
   email_address: string;
   merchant_id: string;
+}
+
+export interface Payments {
+  captures: Capture[];
+}
+
+export interface Capture {
+  id: string;
+  status: string;
+  amount: Amount;
+  final_capture: boolean;
+  seller_protection: SellerProtection;
+  seller_receivable_breakdown: SellerReceivableBreakdown;
+  links: Link[];
+  create_time: string;
+  update_time: string;
+}
+
+export interface SellerProtection {
+  status: string;
+  dispute_categories: string[];
+}
+
+export interface SellerReceivableBreakdown {
+  gross_amount: Amount;
+  paypal_fee: Amount;
+  net_amount: Amount;
 }
 
 export interface Shipping {

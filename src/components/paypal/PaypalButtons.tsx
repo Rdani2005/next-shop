@@ -25,6 +25,7 @@ export const PaypalButton: FC<Props> = ({ orderId, amount }) => {
       intent: "CAPTURE",
       purchase_units: [
         {
+          invoice_id: orderId,
           amount: {
             value: roundedAmount.toString(),
             currency_code: "USD",
