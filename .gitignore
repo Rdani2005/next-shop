@@ -34,3 +34,6 @@ postgres/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# nvim log files
+.nvimlog
