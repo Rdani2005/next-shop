@@ -1,28 +1,37 @@
-import { getOrdersByUser } from "@/actions";
+import { getPaginatedOrders } from "@/actions";
 import { auth } from "@/auth.config";
-import { Title } from "@/components";
+import { Pagination, Title } from "@/components";
 import clsx from "clsx";
 
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { IoCardOutline, IoCartOutline } from "react-icons/io5";
 
-export default async function OrdersPage() {
+interface Props {
+  searchParams: {
+    page?: string;
+  };
+}
+
+export default async function OrdersPage({ searchParams }: Props) {
   const session = await auth();
-  if (!session?.user.id) {
-    redirect("/auth/login");
+  if (!session?.user.id || session.user.role !== "admin") {
+    notFound();
   }
-  const { orders } = await getOrdersByUser();
-  if (orders.length === 0)
+  const { orders, totalPages } = await getPaginatedOrders({
+    page: parseInt(searchParams.page || "0"),
+  });
+
+  if (!orders || orders?.length === 0)
     return (
       <div className="flex justify-center items-center h-[800px]">
         <IoCartOutline size={80} className="mx-5" />
         <div className="flex flex-col items-center text-left">
           <h1 className="text-xl font-semibold text-left">
-            You don&apos;t have any order
+            There is not any order.
           </h1>
           <Link href={"/"} className="text-blue-500 mt-2 text-4xl text-left">
-            Place your first order
+            Go Home
           </Link>
         </div>
       </div>
@@ -30,7 +39,7 @@ export default async function OrdersPage() {
 
   return (
     <>
-      <Title title="Orders" />
+      <Title title="Admin Orders" />
       <div className="mb-10">
         <table className="min-w-full">
           <thead className="bg-gray-200 border-b">
@@ -97,6 +106,7 @@ export default async function OrdersPage() {
           </tbody>
         </table>
       </div>
+      <Pagination totalPages={totalPages}></Pagination>
     </>
   );
 }
