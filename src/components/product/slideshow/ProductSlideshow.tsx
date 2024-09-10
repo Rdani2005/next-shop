@@ -1,24 +1,28 @@
 "use client";
-import React, { FC, useState } from "react";
-import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Swiper as SwiperObject } from "swiper";
 
+import { useState } from "react";
+
+import { Swiper as SwiperObject } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
-import "@/styles/slideshow.css";
-import { ProductSlideshowProps } from "./ProductSlideshowProps.interface";
 
-export const ProductSlideshow: FC<ProductSlideshowProps> = ({
-  images,
-  title,
-  className,
-}) => {
+import "./slideshow.css";
+import { ProductImage } from "../product-image";
+
+interface Props {
+  images: string[];
+  title: string;
+  className?: string;
+}
+
+export const ProductSlideshow = ({ images, title, className }: Props) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperObject>();
+
   return (
     <div className={className}>
       <Swiper
@@ -33,22 +37,25 @@ export const ProductSlideshow: FC<ProductSlideshowProps> = ({
         autoplay={{
           delay: 2500,
         }}
-        thumbs={{ swiper: thumbsSwiper }}
+        thumbs={{
+          swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
+        }}
         modules={[FreeMode, Navigation, Thumbs, Autoplay]}
         className="mySwiper2"
       >
-        {images.map((image, index) => (
-          <SwiperSlide key={index}>
-            <Image
-              src={`/products/${image}`}
-              alt={title}
+        {images.map((image) => (
+          <SwiperSlide key={image}>
+            <ProductImage
               width={1024}
               height={800}
+              src={image}
+              alt={title}
               className="rounded-lg object-fill"
             />
           </SwiperSlide>
         ))}
       </Swiper>
+
       <Swiper
         onSwiper={setThumbsSwiper}
         spaceBetween={10}
@@ -58,13 +65,13 @@ export const ProductSlideshow: FC<ProductSlideshowProps> = ({
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper"
       >
-        {images.map((image, index) => (
-          <SwiperSlide key={index}>
-            <Image
-              src={`/products/${image}`}
-              alt={title}
+        {images.map((image) => (
+          <SwiperSlide key={image}>
+            <ProductImage
               width={300}
               height={300}
+              src={image}
+              alt={title}
               className="rounded-lg object-fill"
             />
           </SwiperSlide>

@@ -20,6 +20,7 @@ import {
 export const Sidebar = () => {
   const { isSideMenuOpen, closeSideMenu } = useUiStore();
   const { data: session } = useSession();
+
   const isAuthenticated = !!session?.user;
   const isAdmin = session?.user.role === "admin";
 
@@ -78,17 +79,16 @@ export const Sidebar = () => {
         </Link>
 
         {isAuthenticated ? (
-          <Link
-            href="/"
+          <button
+            className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
             onClick={() => {
               logout();
               closeSideMenu();
             }}
-            className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
           >
             <IoLogOutOutline size={30} />
-            <span className="ml-3 text-xl">Log Out</span>
-          </Link>
+            <span className="ml-3 text-xl">LogOut</span>
+          </button>
         ) : (
           <Link
             onClick={() => closeSideMenu()}
