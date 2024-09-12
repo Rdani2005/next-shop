@@ -1,4 +1,4 @@
-import { getCategories, getProductBySlug } from "@/actions";
+import { getCategories, getProductBySlugWithImageItem } from "@/actions";
 import { Title } from "@/components";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -13,7 +13,7 @@ type Props = {
 const ProductPage = async ({ params }: Props) => {
   const { slug } = params;
   const [product, categories] = await Promise.all([
-    getProductBySlug(slug),
+    getProductBySlugWithImageItem(slug),
     getCategories(),
   ]);
 

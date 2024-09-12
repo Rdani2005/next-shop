@@ -1,10 +1,10 @@
 "use client";
 
-import { Category, Product } from "@/interfaces";
+import { Category, Product, ProductImage } from "@/interfaces";
 import { useForm } from "react-hook-form";
-
+import Image from "next/image";
 interface Props {
-  product: Product;
+  product: Product & { ProductImages?: ProductImage[] };
   categories: Category[];
 }
 
@@ -19,7 +19,7 @@ interface FormInputs {
   tags: string; // tag, tag, tag
   gender: "men" | "women" | "kid" | "unisex";
   categoryId: string;
-
+  sizes: string[];
   // todo: images
 }
 
@@ -32,10 +32,18 @@ export const ProductForm = ({ product, categories }: Props) => {
     defaultValues: {
       ...product,
       tags: product.tags.join(", "),
+      sizes: product.sizes ?? [],
     },
   });
+
+  const onSubmit = async (data: FormInputs) => {
+    console.log({ data });
+  };
   return (
-    <form className="grid px-5 mb-16 grid-cols-1 sm:px-0 sm:grid-cols-2 gap-3">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="grid px-5 mb-16 grid-cols-1 sm:px-0 sm:grid-cols-2 gap-3"
+    >
       {/* Textos */}
       <div className="w-full">
         <div className="flex flex-col mb-2">
@@ -137,6 +145,23 @@ export const ProductForm = ({ product, categories }: Props) => {
               className="p-2 border rounded-md bg-gray-200"
               accept="image/png, image/jpeg"
             />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {product.ProductImages?.map((image) => (
+              <div key={image.id}>
+                <Image
+                  alt={product.title}
+                  src={`/products/${image.url}`}
+                  width={300}
+                  height={300}
+                  className="rounded shadow-md"
+                />
+                <button className="btn-danger w-full rounded-b-xl">
+                  Delete
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       </div>

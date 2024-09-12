@@ -87,7 +87,7 @@ export const Sidebar = () => {
             }}
           >
             <IoLogOutOutline size={30} />
-            <span className="ml-3 text-xl">LogOut</span>
+            <span className="ml-3 text-xl">Log Out</span>
           </button>
         ) : (
           <Link
