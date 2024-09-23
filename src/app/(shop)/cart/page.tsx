@@ -1,7 +1,4 @@
-import { QuantitySelector, Title } from "@/components";
-import { Product } from "@/interfaces";
-import { initialData } from "@/seed/seed";
-import Image from "next/image";
+import { Title } from "@/components";
 import Link from "next/link";
 import { ProductsInCart } from "./ui/ProductsInCart";
 import { SummaryInformation } from "./ui/SummaryInformation";

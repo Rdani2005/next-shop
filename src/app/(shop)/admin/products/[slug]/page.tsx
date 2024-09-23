@@ -28,7 +28,7 @@ const ProductPage = async ({ params }: Props) => {
   return (
     <>
       <Title title={title} />
-      {product && <ProductForm product={product!} categories={categories} />}
+      <ProductForm product={product ?? {}} categories={categories} />
     </>
   );
 };
