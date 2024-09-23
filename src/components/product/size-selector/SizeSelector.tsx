@@ -20,7 +20,9 @@ export const SizeSelector: FC<Props> = ({
       <div className="flex space-x-2">
         {availableSizes.map((size) => (
           <button
-            onClick={() => onSelectedSize(size)}
+            onClick={() => {
+              if (onSelectedSize) onSelectedSize(size);
+            }}
             key={size}
             className={clsx("px-3 py-2 rounded hover:underline", {
               underline: size === selectedSize,

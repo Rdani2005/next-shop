@@ -19,7 +19,7 @@ export const Pagination = ({ totalPages }: Props) => {
   if (currentPage < 1) redirect(pathName);
   const allPages = generatePagination(currentPage, totalPages);
   const createPageUrl = (pageNumber: number | string) => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
     if (pageNumber === "...") {
       return `${pathName}?${params.toString()}`;
     }

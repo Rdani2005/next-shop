@@ -1,8 +1,9 @@
 export const revalidate = 60;
 import { getPaginatedProducts } from "@/actions";
 import { Pagination, ProductGrid, Title } from "@/components";
-import { Category } from "@/interfaces";
 import { redirect } from "next/navigation";
+
+type Category = "men" | "women" | "kid" | "unisex";
 
 interface Props {
   params: {
@@ -24,7 +25,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const { gender } = params;
   const { products, totalPages } = await getPaginatedProducts({
     page: parseInt(searchParams.page || "0"),
-    gender: gender,
+    gender,
   });
 
   if (products.length === 0) {

@@ -50,7 +50,7 @@ export const AddressForm: FC<Props> = ({
     if (address.firstName) {
       reset(address);
     }
-  }, [address]);
+  }, [address, reset]);
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     const { rememberAddress, ...rest } = data;
